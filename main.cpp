@@ -16,7 +16,7 @@ void flip(char arr[], int i){
     }
 }
 
-bool dfs(std::string curr, std::string end, std::set<std::string>& visited, int max_depth, int& count){
+bool dfs(std::string curr, std::string end, std::set<std::string>& visited, int max_depth, int& count, int& depth_found){
     std::stack<std::pair<std::string, int>> stack;
     stack.push(std::make_pair(curr, 0));
 
@@ -31,6 +31,7 @@ bool dfs(std::string curr, std::string end, std::set<std::string>& visited, int 
         count++;
 
         if (curr == end){
+            depth_found = depth;
             return true;
         }
 
@@ -51,7 +52,7 @@ bool dfs(std::string curr, std::string end, std::set<std::string>& visited, int 
 }
 
 int main(){
-    std::string pancake = "abcdefghijk";
+    std::string pancake = "abcde";
     std::cout << "Pancake: ";
     std::cout << pancake << std::endl;
     std::cout << std::endl;
@@ -64,21 +65,20 @@ int main(){
     int count = 0;
     int max_depth = 30; // profundidad máxima de la búsqueda
     bool found = false;
-    for(int i = 0; i <= max_depth; i++){
+    int depth_found = 0;
+    for(int i = max_depth; i >= 0; i--){
         visited.clear();
         count = 0;
-        found = dfs(pancake, pancakeEnd, visited, i, count);
+        found = dfs(pancake, pancakeEnd, visited, i, count, depth_found);
         if(found){
+            std::cout << "Pancake ordenado: ";
+            std::cout << pancakeEnd << std::endl;
+            std::cout << "Profundidad: " << depth_found << std::endl;
+            std::cout << "Nodos visitados: " << count << std::endl;
             break;
         }
     }
-    std::cout << "Pancake ordenado: ";
-    std::cout << pancakeEnd << std::endl;
-    std::cout << std::endl;
-    if (found){
-        std::cout << "Nodos visitados: " << count << std::endl;
-    }
-    else {
+    if (!found){
         std::cout << "No se encontro una solucion" << std::endl;
     }
     return 0;
